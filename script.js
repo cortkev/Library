@@ -17,12 +17,18 @@ function Book(title, author, pages, read){
 function addBookToLibrary(){
     const book = new Book(this.title.value, this.author.value, this.pages.value, this.read.checked);
     myLibrary.push(book);
-    //console.log(myLibrary);
     clearForm();
-    giveBookId();
-    createCard(book);
     console.log(myLibrary);
+    displayBooks();
     
+}
+
+function displayBooks(){
+  //clears container to print current array
+  bookContainer.textContent = '';
+  myLibrary.forEach((book) => {
+    createCard(book);
+  });
 }
 
 function giveBookId(){
@@ -32,9 +38,7 @@ function giveBookId(){
       i++;
     })
     const index = myLibrary.map(book => book.id);
-    const bookIndex = index.slice(-1)[0];
-    console.log(bookIndex);
-    return bookIndex
+    // const bookIndex = index.slice(-1)[0];
 }
 
 document.getElementById("button").addEventListener("click", function(event){
@@ -53,7 +57,7 @@ function createCard(book){
   giveBookId();
   const div = document.createElement('div');
   div.className = 'cards';
-  div.setAttribute('id', giveBookId());
+  div.setAttribute('id', book.id);
 
   const cardTitle = document.createElement('h2');
   cardTitle.innerHTML = book.title + " " + div.id;
@@ -78,29 +82,17 @@ function createCard(book){
   div.append(removeBtn);
 
   bookContainer.append(div);
-
- // console.log(index);
 }
 
 //index = position in array
 function removeButton(e){
   const selectedBookIndex = e.parentElement.id;
   e.parentElement.remove();
-  //myLibrary = myLibrary.filter(x => x !== selectedBookIndex);
   console.log(selectedBookIndex);
   myLibrary.splice(selectedBookIndex, 1)
-  giveBookId();
+  displayBooks();
   
   console.log(myLibrary);
-  //need to remove book from array
 }
 
-
-
-
-function displayBooks(){
-  myLibrary.forEach(function (book, index){
-    createCard(book, index);
-    console.log(index);
-  });
-}
+//how to update object prototype instance
