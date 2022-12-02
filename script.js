@@ -25,12 +25,14 @@ function addBookToLibrary(){
 
 function displayBooks(){
   //clears container to print current array
+  //before displaying cards
   bookContainer.textContent = '';
   myLibrary.forEach((book) => {
     createCard(book);
   });
 }
 
+//give every book in array an id
 function giveBookId(){
   let i = 0;
     myLibrary.map(n => {
@@ -38,12 +40,12 @@ function giveBookId(){
       i++;
     })
     const index = myLibrary.map(book => book.id);
-    // const bookIndex = index.slice(-1)[0];
 }
 
-document.getElementById("button").addEventListener("click", function(event){
+document.getElementById("form").addEventListener("submit", function(event){
     event.preventDefault()
   });
+  
 
 // clear form after every submission
 function clearForm(){
@@ -60,7 +62,7 @@ function createCard(book){
   div.setAttribute('id', book.id);
 
   const cardTitle = document.createElement('h2');
-  cardTitle.innerHTML = book.title + " " + div.id;
+  cardTitle.innerHTML = book.title;
   div.append(cardTitle);
 
   const cardAuthor = document.createElement('h3');
@@ -71,28 +73,45 @@ function createCard(book){
   cardPages.innerHTML = book.pages;
   div.append(cardPages);
 
+  const btnDiv = document.createElement('div');
+  btnDiv.className = 'button-div';
+  div.append(btnDiv);
+
   const removeBtn = document.createElement('button');
   removeBtn.className = 'remove-button';
   removeBtn.setAttribute('onclick', 'removeButton(this)');
-  
   const removeIcon = document.createElement('img');
   removeIcon.setAttribute('src', 'images/deleteButton.svg');
   removeIcon.className = 'remove-icon';
   removeBtn.append(removeIcon);
-  div.append(removeBtn);
+  btnDiv.append(removeBtn);
+
+  const readBtn = document.createElement('button');
+  readBtn.className = 'read-button';
+  btnDiv.append(readBtn);
+
+  readBtn.addEventListener('click', () => { 
+    book.read = !book.read;
+    displayBooks();
+    console.log(myLibrary);
+}); 
+
+  if(book.read === true){
+    readBtn.textContent = 'read';
+  }
+  else{
+    readBtn.textContent = 'unread';
+  }
 
   bookContainer.append(div);
 }
 
-//index = position in array
 function removeButton(e){
   const selectedBookIndex = e.parentElement.id;
   e.parentElement.remove();
   console.log(selectedBookIndex);
-  myLibrary.splice(selectedBookIndex, 1)
+  myLibrary.splice(selectedBookIndex, 1);
   displayBooks();
   
   console.log(myLibrary);
 }
-
-//how to update object prototype instance
